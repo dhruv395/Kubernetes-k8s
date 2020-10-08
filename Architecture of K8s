@@ -1,0 +1,17 @@
+When you deploy Kubernetes, you get a cluster
+A cluster is a set of machines, called nodes
+A cluster has at least one worker node and at least one master node
+
+In earlier days of Kubernetes, worker nodes were called minions
+In Kubernetes, every cluster has at least one master node and at least one worker node
+There can be more than one master nodes in a cluster to provide a cluster with failover and high availability
+There can be multiple clusters in Kubernetes architecture
+
+The worker node(s) host the pods that are the components of the application
+The master node(s) manages the worker nodes and the pods in the cluster
+
+In a Cluster Kubernetes supports:
+ No more than 5000 nodes
+ No more than 150000 total pods
+ No more than 300000 total containers
+ No more than 100 pods per node
