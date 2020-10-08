@@ -1,0 +1,34 @@
+What is Kubernetes?
+What is Container Orchestration Engine?
+Why do we need Kubernetes?
+
+Kubernetes is the Greek word for helmsman or captain of a ship
+Kubernetes is also referred to as k8s, as there are 8 characters between k and s
+
+container management (orchestration) tool
+developed by Google lab (& later donated to CNCF)
+open source
+written on Golang
+also called K8s
+
+Container Management / Orchestration tool
+Container Orchestration tool or engine automates deploying, scaling and managing the containerized application on a group of servers
+e.g.
+Kubernetes
+Docker Swarm
+Apache Mesos Marathon
+
+Docker is a tool designed to make it easier to deploy and run applications by using containers
+
+Organizations have to use multiple containers to
+Ensure availability
+Load balancing
+Scale-up and down based on user load
+
+deploying
+scheduling
+scaling
+load balancing
+batch execution
+rollbacks
+monitoring
