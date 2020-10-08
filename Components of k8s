@@ -51,6 +51,17 @@ Worker node:
   #1. kubelet: it's an agent running on each node, communicate with the components from the master node.
               - make sure that containers are running in a pod.
               - in case any pod has any issue, kubelet tries to restart the pods on the same node or a different node.
-  #2. kube-proxy: 
-Container runtime
-
+  #2. kube-proxy: A network agent which runs on each node, responsible for maintaing network configuration and rules.
+                - exposes services to the outside world.
+                - core networking components in k8s.
+                - All worker nodes run  a daemon called kube-proxy, which watches the API server on the master node for the addition and removal of services and endpoints.
+                
+  #3. Container runtime: The container runtime is the software that's responsible for running containers.
+                        - k8s supports several container runtimes:
+                                    - docker
+                                    - containerd
+                                    - cri-o
+                                    - Rktlet
+                                    - kubernetes CRI
+                         - in order to run and manage containers lifecycle, k8s requires a container runtime on the node where a pod and it's containers are to be scheduled.
+                         
