@@ -1,0 +1,56 @@
+4 Components of Master node
+#1. API Server:- Responsible for all communications ( JSON over HTTP API). It allows applications to communicate with one another. It's the frontend for the k8s control plan.
+            - Exposes API for almost every operation
+            - Users interact with the API using a tool called kubectl
+            - kubectl is the command line utility to interact with the kubernetes API
+            - kubectl talks to the API to perform any action that a user issues from command line.
+            
+#2. Scheduler - it's a component that schedules pods across multiple nodes. It's a component on the master that watches newly created pods that have no nodes assigned & select
+              a node for them to run on.
+           - The scheduler obtains from etcd, via the API server, resource usage data for each worker node in the cluster.
+           - scheduler gets information for hardware config from config file and schedules the pods on nodes accordingly.
+           
+#3. Controller Manager - it's a component on master that runs controllers. 
+                    : kube-controller-manager
+                    : cloud-controller-manager
+                    
+                    :The kube-controller-manager runs controllers responsible to act when nodes become unavailable, to ensure pod counts are as expected, to create endpoints,
+                    service accounts and API access tokens.
+                    - node controller
+                    - replication controller
+                    - endpoints controller
+                    - service account and token controller
+                      
+                      -Responsible for overall health of the cluster
+                      - ensures nodes are running all the time
+                      - correct number of pods are running as per spec file.
+          # logically each controller is a separate process, but to reduce complexity, they are all compiled into single binary and run in a single process.
+          # Controller run watch-loops continuously to compare cluster's desired stat(from config) to it's current stat(obtained from etcd data store via the API server)
+          Incase of a mismatch corrective action is taken in the cluster untill it's current state matches the desired state.
+                    
+                    
+                    :The cloud-controller-manager runs controller responsible to interact with underlying infrastructure of a cloud provider when nodes become unavailable,
+                    to manage storage volumes when provided by a cloud service and to manage load balancing and routing.
+                    - node controller: for checking the cloud provider to determine if a node has been deleted in the cloud after it stops responding.
+                    - route controller: For setting up routes in the underlying cloud infrastructure.
+                    - service controller: for creating, updating and deleting cloud provider load balancers
+                    - volume controller: for creating, attaching and mounting volumes and interacting with the cloud providers to orchestrate volume.
+            # You can disable the controller loops by setting the --cloud-provider flag to external when starting the kubecontroller manager
+                    
+#4. Etcd - open source, distributed key-value database from CoreOS.
+     - consistent and highly available key value store used as kubernets backing store for all cluster data.
+     - out of the master components, only the API server is able to communicate with the etcd data store.
+     - etcd can be part of kubernetes master or it can be configured externally.
+
+
+Worker node:
+            - can be physical or VM's when containers are deployed.
+            - every node in a kubernets cluster must run a container runtime like docker.
+
+3 Components of Worker node: 
+  #1. kubelet: it's an agent running on each node, communicate with the components from the master node.
+              - make sure that containers are running in a pod.
+              - in case any pod has any issue, kubelet tries to restart the pods on the same node or a different node.
+  #2. kube-proxy: 
+Container runtime
+
