@@ -2,3 +2,5 @@ Health Check:
 kubectl cluster-info
 kubectl cluster-info dump
 
+kubectl get nodes
+
