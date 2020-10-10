@@ -1,0 +1,13 @@
+Online k8s labs
+  - kubernetes playground
+  - play with k8s
+  - play with kubernetes classroom
+  
+Cloud bas k8s service
+  - GKE: Google k8s engine
+  - AKS: Azure k8s service
+  - EKS: Amazon k8s service
+  
+K8s installation tools:
+  - Minikube
+  - kubeadm
