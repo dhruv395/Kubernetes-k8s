@@ -1,0 +1,4 @@
+Health Check:
+kubectl cluster-info
+kubectl cluster-info dump
+
