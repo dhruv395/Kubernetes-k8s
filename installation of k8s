@@ -56,6 +56,6 @@ sysctl ==system
 echo "1" > /proc/sys/net/ipv4/ip_forward
 
 ###restart systemd daemon and kubelet service with the commands
-systemctl daemon reload
-systemctl reload kubelet
+systemctl daemon-reload
+systemctl restart kubelet
        
