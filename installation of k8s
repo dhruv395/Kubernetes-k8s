@@ -12,19 +12,19 @@ K8s installation tools:
   - Minikube: Minikube is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a
               VM on your laptop for users looking to try out Kubernetes or develop with it day-to-day.
  
- - kubeadm: 
-          1. Launched 4 centos vms's with minimum 2 CPU and 2GB RAM and run below commands in all vms
+############## kubeadm:  Install k8s with kubeadm ############################################################################################################
+ 
+Step 1. Launched 4 centos vms's with minimum 2 CPU and 2GB RAM and run below commands in all vms
+step 2. Pre requisite: disable firewall | swap | SELinux on master and worker nodes
       
       systemctl status firewalld
-      systemctlstop firewalld
       systemctl stop firewalld
-      systemctl status firewalld
       systemctl disable firewalld
       getenforce
-     setenforce 0
-     sed -i 's/enforcing/disabled/g' /etc/selinux/config
-     
-     2. Now add the k8s repo to Download and install docker, kubectl, kubelet and kubeadm in all master and worker nodes.
+      setenforce 0
+      sed -i 's/enforcing/disabled/g' /etc/selinux/config
+    
+step3. Now add the k8s repo to Download and install docker, kubectl, kubelet and kubeadm in all master and worker nodes.
         
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -59,3 +59,47 @@ echo "1" > /proc/sys/net/ipv4/ip_forward
 systemctl daemon-reload
 systemctl restart kubelet
        
+
+step 4. configure k8s master node
+  #initializing master node run below command
+  
+  kubeadm init --pod-network-cidr=10.240.0.0/16
+  >>output
+  ##if you want to run kubectl as a regular user then run:
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  
+  ## node down below join command  for worker nodes
+  
+   kubeadm join 10.142.0.2:6443 --token t6vry0.4sqs2esvqpbhl6eu \
+    --discovery-token-ca-cert-hash sha256:3eb894ba44dbe1fc5d32090c9433bd35c05ec3c2b9a5d2c31ef93635fcae17f5
+    
+  ##Install Flannel network plugin for the Pod Network (On Master Node)
+  kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+  
+  ## to check if pod network has been installed succesfully
+  kubectl get pods --all-namespaces
+  
+
+5. Join the worker node to the cluster
+    kubeadm join 10.142.0.2:6443 --token t6vry0.4sqs2esvqpbhl6eu \
+    --discovery-token-ca-cert-hash sha256:3eb894ba44dbe1fc5d32090c9433bd35c05ec3c2b9a5d2c31ef93635fcae17f5
+    
+6. Display node status
+    kubectl get nodes
+
+7. Deploy sample nginx application
+  kubectl apply -f  https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/controllers/nginx-deployment.yaml
+  
+  ## check pods 
+  kubectl get pods
+  ## check pods running on which worker nodes
+  kubectl get pods -o wide
+    
+
+  
+  
+  
+
+  
