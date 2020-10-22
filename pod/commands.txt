@@ -1,0 +1,12 @@
+#To create & deploy a pod
+kubectl create -f nginx-pod.yml
+kubectl get pod
+To get the pod ip address and worker node details
+kubectl get pod  -o wide
+kubectl get pod nginx-pod -o yaml
+##to get details of pod run
+kubectl describe pod nginx-pod
+##pod troubleshooting
+ping 10.240.3.5
+## to login inside a pod
+kubectl exec -it nginx-pod -- /bin/bash
