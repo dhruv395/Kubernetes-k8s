@@ -10,3 +10,6 @@ kubectl describe pod nginx-pod
 ping 10.240.3.5
 ## to login inside a pod
 kubectl exec -it nginx-pod -- /bin/bash
+
+#to delete a pod
+kubectl delete pod nginx-pod
