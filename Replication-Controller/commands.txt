@@ -1,0 +1,17 @@
+## to deploy the nginx app manifest file 
+kubectl create -f nginx-rc.yml 
+  146  kubectl get pod
+  147  kubectl get pod -o wide
+  149  kubectl get pod -l app=nginx-app
+  150  kubectl describe rc nginx-rc
+  153  kubectl get rc
+  154  kubectl get nodes
+  155  kubectl get nodes -o wide
+  156  kubectl scale rc nginx-rc --replicas=5
+  158  kubectl get rc
+  159  kubectl get pod
+  160  kubectl get pod -o wide
+  161  kubectl scale rc nginx-rc --replicas=3
+  163  kubectl get pod
+  164  kubectl delete -f nginx-rc.yml 
+  166  kubectl get pods -l app=nginx-app
