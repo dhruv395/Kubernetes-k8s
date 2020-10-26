@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+        name: nginx-rs
+
+spec:
+        replicas: 3
+        selector:                               # here we are using both selector types for demo
+                matchLabels:                    ## this is equality based selector
+                        app: nginx-app
+                matchExpressions:               ## this is set based selector
+                        - {key: tier, operator: In, values: [frontend]}
+
+        template:
+                metadata:
+                        name: nginx-pod
+                        labels:
+                                app: nginx-app
+                                tier: frontend
+                spec:
+                        containers:
+                        - name: nginx-container
+                          image: nginx
+                          ports:
+                          - containerPort: 80

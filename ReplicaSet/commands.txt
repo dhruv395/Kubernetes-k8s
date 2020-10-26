@@ -1,0 +1,16 @@
+kubectl create -f nginx-rs.yml 
+ kubectl get pod
+ kubectl get pod -o wide
+ kubectl get pod -l app=nginx-app
+ kubectl describe rs nginx-rs
+ kubectl get rs
+ kubectl get nodes
+kubectl get nodes -o wide
+ kubectl scale rs nginx-rs --replicas=5
+ kubectl get rs
+  kubectl get pod
+ kubectl get pod -o wide
+    kubectl scale rs nginx-rs --replicas=3
+    kubectl get pod
+    kubectl delete -f nginx-rs.yml 
+   kubectl get pods -l app=nginx-app
