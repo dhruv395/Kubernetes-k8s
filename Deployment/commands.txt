@@ -1,0 +1,51 @@
+##create deployment
+
+ kubectl create -f nginx-deploy.yml 
+  294  kubectl get deploy
+  295  kubectl get deploy -l app=nginx-app
+  296  kubectl get rs
+  297  kubectl get rs -l app=nginx-app
+  298  kubectl get pod
+  299  kubectl get pod -l app=nginx-app
+  301  kubectl describe deploy nginx-deploy
+
+### update app version  
+  308  kubectl set image deploy nginx-deploy nginx-container=nginx:1.9.1
+  309  kubectl describe deploy nginx-deploy
+      
+       kubectl edit deploy nginx-deploy
+  311  kubectl get deploy
+  312  kubectl get deploy -l app=nginx-deploy
+
+## to check the status of upgrade  
+313  kubectl rollout status deploy/nginx-deploy
+  314  kubectl get deploy -l app=nginx-deploy
+  315  kubectl get deploy
+  316  kubectl get deploy nginx-deploy
+  317  kubectl describe deploy nginx-deploy
+
+##to rollback to a previous version incase new version is not working; record is to keep command history
+  318  kubectl set image deploy nginx-deploy nginx-container=nginx:1.91 --record
+  319  kubectl rollout status deploy/nginx-deploy
+  320  kubectl rollout history deploy/nginx-deploy
+
+##rollback command
+  321  kubectl rollout undo deploy/nginx-deploy
+  322  kubectl rollout status deploy/nginx-deploy
+  323  kubectl get pods
+
+##scaling up and down
+
+  324  kubectl scale deploy nginx-deploy --replicas=5
+  325  kubectl get deploy -l app=nginx-deploy
+  326  kubectl get deploy
+  327  kubectl get pods
+  328  kubectl get pods -l app=nginx-app
+
+
+  329  kubectl scale deploy nginx-deploy --replicas=2
+  330  kubectl get deploy
+  331  kubectl get pods -l app=nginx-app
+  332  kubectl delete -f nginx-deploy.yml 
+  333  kubectl get pods -l app=nginx-app
+  334  kubectl get deploy
