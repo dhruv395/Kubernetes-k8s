@@ -1,0 +1,19 @@
+ kubectl get pod
+  379  kubectl create -f nginx-deploy.yml 
+  382  kubectl get deploy
+  383  kubectl get deploy -o wide
+  384  kubectl get rs
+  385  kubectl get rs -o wide
+  386  kubectl get pod -o wide
+  387  kubectl create -f nginx-svc-np.yml 
+  390  kubectl get service
+  391  kubectl get service -l app=nginx-app
+  392  kubectl get pod -o wide
+  393  kubectl describe svc myservice
+  394  kubectl describe svc my-service
+  396  kubectl get pod -o wide
+  397  curl 10.240.3.16:80
+  398  curl http://10.240.3.16:80
+  399  curl http://10.240.3.15:80
+  400  curl http://10.240.2.15:80
+  401  kubectl get svc -l app=nginx-app
