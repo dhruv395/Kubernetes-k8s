@@ -1,0 +1,18 @@
+#first we need to create NLB and then use the external IP address to configure LB
+apiVersion: v1
+kind: Service
+metadata:
+        name: my-lb-service
+        labels:
+                app: nginx-app
+
+spec:
+        selector:
+                app: nginx-app
+        type: LoadBalancer
+        externalIPs:            #ip of network LB
+        - 35.211.141.21 
+        ports:
+        - nodePort: 32000
+          port: 80
+          targetPort: 80

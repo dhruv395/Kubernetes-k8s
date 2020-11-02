@@ -1,0 +1,23 @@
+kubectl create -f nginx-deploy.yml 
+kubectl create -f nginx-service-lb.yml 
+  727  kubectl get svc
+  728  kubectl describe svc
+  729  kubectl get po -o wide
+  733  curl http://35.211.141.21
+  738  kubectl get po
+  744  kubectl delete po nginx-deploy1
+  745  kubectl get rs
+  746  kubectl get deploy
+  747  kubectl delete deploy nginx-deploy1
+  748  kubectl get deploy
+  750  kubectl get pod
+  753  kubectl get rs
+  754  kubectl create -f nginx-deploy.yml 
+  755  kubectl get rs
+  756  kubectl get pod
+  757  kubectl describe svc
+  758  kubectl get po -o wide
+  759  kubectl delete svc my-lb-service
+  760  kubectl get po -o wide
+  761  kubectl get deploy
+  762  kubectl delete deploy nginx-deploy1
