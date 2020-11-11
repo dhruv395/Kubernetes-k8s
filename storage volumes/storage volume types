@@ -1,0 +1,34 @@
+Why do we need?
+- For data persistance through out pod lifecycle.
+- for data persistance beyond pod lifecycle.
+- To share  files between containers inside pod
+
+Volumes
+- volumes are associated with lifecycle of pod.
+
+Volume Categories
+- Ephemeral(same lifetime as pod) and 
+- Durable(Beyond pod lifetime)
+
+Volume Types:
+
+Hostbased volumes:
+-emptyDir: 
+    . it's created when a pod is assigned to  a node
+    . stays as log as pod is running
+    . once pod is removed from a node emptydir is deleted forever
+    . used for tepmorary space
+
+-hostPath 
+    . mounts a file or directory from the host nodes filesystem into your pod
+    . remains even after the pod is terminated
+    . similar to docker volume
+    
+cloudbased volumes:
+- gcePersistentDisk
+- awsEBS
+- azureFile
+
+Network based volumes:
+- nfs
+- iscsi
