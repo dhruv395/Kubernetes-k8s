@@ -26,6 +26,14 @@ Hostbased volumes:
     
 cloudbased volumes:
 - gcePersistentDisk
+    . mounts a GCE PD(persistent disk) into a pod
+    . volume data is persistent even after pod is terminated
+    . Read-write only on one node and read only on many nodes
+    Restrictions:
+    . You must create a PD using Gcloud or the GCE api or console before you can use it.
+    . nodes on which pods are running must be GCE VMs
+    . VMs need to be in same GCE project and zone as the PD
+    
 - awsEBS
 - azureFile
 
