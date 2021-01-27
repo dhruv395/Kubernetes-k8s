@@ -1,0 +1,8 @@
+kubectl create -f resource-quota.yml
+kubectl get pods --namespace=dev
+kubectl get pods --namespace=prod
+kubectl get pods --all-namespaces
+
+#set namespace permanently
+kubectl config set-context $(kubectl config current-context) --namespace=dev
+kubectl get all
