@@ -1,3 +1,10 @@
+kubectl create -f replicaset-defnition.yml
+kubectl get replicaset
+kubectl delete replicaset myapp-replicaset     #also deletes all underlying pods
+kubectl replace -f replicaset-definition.yml
+kubectl scale --replicas=6 -f replicaset-definition.yml
+
+
 kubectl create -f nginx-rs.yml 
  kubectl get pod
  kubectl get pod -o wide
