@@ -1,0 +1,154 @@
+ETCD
+-----
+-It's distributed reliable key-value store that's simple, secure and fast.
+-Stores information regarding the cluster such as NODEs, PODS, CONFIGS, SECRETS, ACCOUNTS, ROLES, BINDINGS, OTHERS.
+
+ETCD - Commands (Optional)
+----------------------------
+(Optional) Additional information about ETCDCTL Utility
+
+ETCDCTL is the CLI tool used to interact with ETCD.
+
+ETCDCTL can interact with ETCD Server using 2 API versions - Version 2 and Version 3.  By default its set to use Version 2. Each version has different sets of commands.
+
+For example ETCDCTL version 2 supports the following commands:
+
+etcdctl backup
+More specifically, Kubernetes is designed to accommodate configurations that meet all of the following criteria:
+
+No more than 100 pods per node
+No more than 5000 nodes
+No more than 150000 total pods
+No more than 300000 total containers
+
+Master Node Ports:
+KubeAPI server: 6443 TCP
+ETCD		  : 2379-2380 TCP
+Kubelet API	   : 10250 TCP
+Kube scheduler	: 10251 TCP
+Kube controller Manager: 10252
+
+Woker Node ports:
+Kubelet API		: 10250
+NodePort 		: 30000-32767 
+
+
+
+##########################################################
+
+etcdctl cluster-health
+etcdctl mk
+etcdctl mkdir
+etcdctl set
+
+Whereas the commands are different in version 3
+
+etcdctl snapshot save 
+etcdctl endpoint health
+etcdctl get
+etcdctl put
+
+To set the right version of API set the environment variable ETCDCTL_API command
+
+export ETCDCTL_API=3
+
+When API version is not set, it is assumed to be set to version 2. And version 3 commands listed above don't work. 
+When API version is set to version 3, version 2 commands listed above don't work.
+
+Apart from that, you must also specify path to certificate files so that ETCDCTL can authenticate to the ETCD API Server. 
+The certificate files are available in the etcd-master at the following path.
+
+--cacert /etc/kubernetes/pki/etcd/ca.crt     
+--cert /etc/kubernetes/pki/etcd/server.crt     
+--key /etc/kubernetes/pki/etcd/server.key
+
+
+So for the commands I showed in the previous video to work you must specify the ETCDCTL API version and path to certificate files. 
+Below is the final form:
+
+kubectl exec etcd-master -n kube-system -- sh -c "ETCDCTL_API=3 etcdctl get / --prefix --keys-only --limit=10 --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt  --key /etc/kubernetes/pki/etcd/server.key" 
+
+##############################################################Pods vs Deployment vs Service
+Pods
+
+are the basic deployable unit in Kubernetes. But in real-world use cases, you want your deployments to stay up and running automatically and 
+remain healthy without any manual intervention. For this the recommended approach is to use a Deployment, which under the hood create a ReplicaSet.
+
+A ReplicaSet, as the name implies, is a set of replicas (Pods) maintained with their Revision history.
+
+A deployment is a method of launching a pod with containerized applications and ensuring that the 
+necessary number of replicas is always running on the cluster.
+Deployment creates a ReplicaSet which in turn make sure that, CurrentReplicas is always same as desiredReplicas .
+
+Advantages :
+
+You can rollout and rollback your changes using deployment
+Monitors the state of each pod
+Best suitable for production
+Supports rolling updates
+
+######
+A service is responsible for exposing an interface to those pods, which enables network access from either within the cluster 
+or between external processes and the service.
+
+What are the types of Kubernetes services?
+
+ClusterIP. Exposes a service which is only accessible from within the cluster.
+NodePort. Exposes a service via a static port on each node’s IP.
+LoadBalancer. Exposes the service via the cloud provider’s load balancer.
+ExternalName. Maps a service to a predefined externalName field by returning a value for the CNAME record.
+
+Services point to pods. Services do not point to deployments or replicasets. Services point to pods directly using labels. This gives great flexibility because it doesn’t matter through which various 
+(maybe even customized) ways pods have been created.
+
+
+########### Ingress
+Ingress is actually NOT a type of service. Instead, it sits in front of multiple services and act as a “smart router” or entrypoint into your cluster.
+
+Is used if you want to expose multiple services under the same IP address, and these services all use the same L7 protocol (typically HTTP).
+
+
+###########################################################################################
+Labels are nothing but key-value pairs assigned to Kubernetes Objects like Pods, Service, etc. Labels can be used to organize and to 
+select Kubernetes objects. Labels can be attached to objects at creation time and can be modified at any time. We can add multiple Labels 
+to Kubernetes objects.
+
+Selectors are used by the users to select a set of objects. The label selector is the core grouping primitive in Kubernetes. 
+Kubernetes API supports two types of selectors
+
+Equality-based selectors:
+This allows filtering by key and value, where matching objects should satisfy all the specified labels.
+Set-based selectors:
+This allows filtering keys according to a set of values.
+
+################################################################################################ secret vs configmap
+
+ConfigMaps and Secrets store data as a key value pair. The major difference is, Secrets store data in base64 format meanwhile ConfigMaps
+ store data in a plain text.
+
+If you have some critical data like, keys, passwords, service accounts credentials, db connection string, etc then you should always go 
+for Secrets rather than Configs.
+
+And if you want to do some application configuration using environment variables which you don't want to keep secret/hidden like, app theme, 
+base platform url, etc then you can go for ConfigMaps
+
+#################################################################################Use Cases for Taints and Tolerations
+
+-Dedicated nodes.
+- Nodes with special hardware
+
+#### Implementing Dedicated Nodes using Taints and Node Affinity
+- Add taints to one or more nodes.
+- Add Label to a Node
+- Then we need to create a Pod with the matching toleration for the above-created taint and the appropriate node affinity’s nodeSelectorTerms.
+
+
+##########################################################################################Deamonset
+A DaemonSet ensures that all (or some) Nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them.
+As nodes are removed from the cluster, those Pods are garbage collected. Deleting a DaemonSet will clean up the Pods it created.
+
+Some typical uses of a DaemonSet are:
+
+running a cluster storage daemon on every node
+running a logs collection daemon on every node
+running a node monitoring daemon on every node
