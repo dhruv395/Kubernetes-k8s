@@ -135,12 +135,21 @@ base platform url, etc then you can go for ConfigMaps
 #################################################################################Use Cases for Taints and Tolerations
 
 -Dedicated nodes.
+Dedicated Nodes: If you want to dedicate a set of nodes for exclusive use by a particular set of users, you can add a taint to those nodes 
+(say, kubectl taint nodes nodename dedicated=groupName:NoSchedule) and then add a corresponding toleration to their pods
+
 - Nodes with special hardware
+In a cluster where a small subset of nodes have specialized hardware (for example GPUs), it is desirable to keep pods that don't need 
+the specialized hardware off of those nodes
 
 #### Implementing Dedicated Nodes using Taints and Node Affinity
 - Add taints to one or more nodes.
 - Add Label to a Node
 - Then we need to create a Pod with the matching toleration for the above-created taint and the appropriate node affinity’s nodeSelectorTerms.
+
+There are currently two types of node affinity,
+- requiredDuringSchedulingIgnoredDuringExecution 
+- preferredDuringSchedulingIgnoredDuringExecution
 
 
 ##########################################################################################Deamonset
@@ -152,3 +161,78 @@ Some typical uses of a DaemonSet are:
 running a cluster storage daemon on every node
 running a logs collection daemon on every node
 running a node monitoring daemon on every node
+
+####################
+ingress, ingress controller, service account
+
+
+
+https://www.replex.io/blog/kubernetes-in-production-best-practices-for-cluster-autoscaler-hpa-and-vpa
+Horizontal Pod Autoscaler:
+
+
+kube-proxy is a network proxy that runs on each node in the cluster. kube-proxy maintains network rules on nodes. These network rules 
+allow network communication to the Pods from network sessions inside or outside of the cluster.
+
+In a cluster configured with kubeadm, you can find kube-proxy as a daemonset.
+
+kubeproxy is responsible for watching services and endpoint associated with each service. When the client is going to connect
+to the service using the virtual IP the kubeproxy is responsible for sending traffic to actual pods.
+
+
+######################Deployment strategy
+- Recreate and 
+- Rolling update
+
+
+
+imperative commands:
+configmap:
+kubectl create cm webapp-config-map --from-literal=APP_COLOR=darkblue
+
+
+
+configmap.yaml
+_____________
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: default
+spec:
+  containers:
+  - envFrom:
+    - configMapRef:
+         name: webapp-config-map
+    image: kodekloud/webapp-color
+    name: webapp-color
+	
+_________________________________
+
+kubectl create secret generic db-secret --from-file=/root/mysqlscret.yaml
+_____________________________________
+---
+apiVersion: v1 
+kind: Pod 
+metadata:
+  labels:
+    name: webapp-pod
+  name: webapp-pod
+  namespace: default 
+spec:
+  containers:
+  - image: kodekloud/simple-webapp-mysql
+    imagePullPolicy: Always
+    name: webapp
+    envFrom:
+    - secretRef:
+        name: db-secret
+_______________________________________
+Init containers:
+--------------------
+containers that run before app containers in a Pod. Init containers can contain utilities or setup scripts not present in an app image.	
+-A task that will be run only  one time when the pod is first created.
+-When a POD is first created the initContainer is run, and the process in the initContainer must run to a completion before 
+the real container hosting the application starts. 
