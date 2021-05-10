@@ -1,7 +1,24 @@
-kubectl create -f resource-quota.yml
+
+Kubernetes supports multiple virtual clusters backed by the same physical cluster. These virtual clusters are called namespaces.
+
+Kubernetes starts with 3 initial namespaces:
+default: 
+kube-system: The namespace for objects created by the Kubernetes system
+kube-public
+
+
+commands:
+kubectl get namespace
+kubectl get namespaces --show-labels
+kubectl describe namespaces <name>
+kubectl create namespace <insert-namespace-name-here>
+kubectl delete namespaces <insert-some-namespace-name>
 kubectl get pods --namespace=dev
-kubectl get pods --namespace=prod
 kubectl get pods --all-namespaces
+kubectl run nginx --image=nginx --namespace=<insert-namespace-name-here>
+
+kubectl create -f resource-quota.yml
+kubectl get pods --namespace=prod
 
 #set namespace permanently
 kubectl config set-context $(kubectl config current-context) --namespace=dev
