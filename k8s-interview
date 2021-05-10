@@ -87,9 +87,15 @@ Monitors the state of each pod
 Best suitable for production
 Supports rolling updates
 
-######
+###### Service:
 A service is responsible for exposing an interface to those pods, which enables network access from either within the cluster 
 or between external processes and the service.
+
+services enables communications betwn various components within and outside of the applications.
+It enables connectivity betwn pods.
+It enables the frontned applications to be made available to end users.
+It helps communication betwn backend and frontend pods.
+It helps in establishing connectivity to external data source.
 
 What are the types of Kubernetes services?
 
