@@ -100,7 +100,7 @@ It helps in establishing connectivity to external data source.
 What are the types of Kubernetes services?
 
 ClusterIP. Exposes a service which is only accessible from within the cluster.
-NodePort. Exposes a service via a static port on each node’s IP.
+NodePort. Exposes a service via a static port on each node’s IP. (range of nodeport30000-32767)
 LoadBalancer. Exposes the service via the cloud provider’s load balancer.
 ExternalName. Maps a service to a predefined externalName field by returning a value for the CNAME record.
 
